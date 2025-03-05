@@ -38,9 +38,10 @@ io.on('connection', async(socket) => {
     });
 
     socket.on('chat message', async (msg) => {
-        const newMessage = new Message({message: msg});
+        console.log('message: ' + msg);
+        const newMessage = new Message({message: msg });
         await newMessage.save();
-        io.emit('chat message', { message: msg, id: newMessage._id.toString() });
+        io.emit('chat message', {message: msg});
 }); 
 
 if(!socket.recovered) {

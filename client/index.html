@@ -5,29 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat en Vivo</title>
     <script type="module">
-        import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
+           import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
 
-        const socket = io({
-            serverOffset : 0
-        });
+const socket = io({
+    auth: {
+        serverOffset: 0
+    }
+});
 
-        const form = document.getElementById('form');
-        const input = document.getElementById('input');
-        const messages = document.getElementById('messages');
+const form = document.getElementById('form');
+const input = document.getElementById('input');
+const messages = document.getElementById('messages');
 
-        socket.on('chat message', (msg, serverOffset) => {
-            const item = '<li>' + msg.message + '</li>';
-            messages.insertAdjacentHTML('beforeend', item);
-            socket.auth.serverOffset = serverOffset;
-        });
+socket.on('chat message', (msg, serverOffset) => {
+    const item = '<li>' + msg.message + '</li>';
+    messages.insertAdjacentHTML('beforeend', item);
+    socket.auth.serverOffset = serverOffset;
+});
 
-        form.addEventListener('submit', function(e){
-            e.preventDefault();
-            if(input.value){
-                socket.emit('chat message', input.value);
-                input.value = '';
-            }
-        });
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(input.value){
+        socket.emit("chat message", input.value); // Aquí usamos socket.emit
+        input.value = '';
+    }
+});
     </script>
     <style>
         *,
